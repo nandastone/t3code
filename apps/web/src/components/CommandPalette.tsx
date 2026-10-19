@@ -413,7 +413,13 @@ function buildThreadMenuPaletteItems(
     const title = THREAD_ACTION_PALETTE_TITLES[item.id] ?? item.label;
     const Icon = item.icon ? THREAD_ACTION_ICONS[item.icon] : undefined;
     const icon = Icon ? <Icon className={ITEM_ICON_CLASS} /> : null;
-    const searchTerms = [title, item.label, "thread"];
+    // Root search does not descend into submenus, so a parent carries its children's labels.
+    const searchTerms = [
+      title,
+      item.label,
+      "thread",
+      ...(item.children?.map((child) => child.label) ?? []),
+    ];
     if (!item.children) {
       return [
         {
